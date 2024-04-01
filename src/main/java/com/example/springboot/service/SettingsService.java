@@ -3,10 +3,11 @@ package com.example.springboot.service;
 import com.example.springboot.model.Settings;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface SettingsService {
-    List<Settings> getAllSettings();
+    String getAllSettings() throws IOException;
     Settings saveSetting(Settings setting);
     Settings findByName(String name);
     Settings updateSetting(Settings setting);

@@ -4,6 +4,7 @@ import com.example.springboot.model.Settings;
 import com.example.springboot.repository.InMemoryDAOSettings;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -16,7 +17,7 @@ public class MemoryImplSettingsService implements SettingsService {
     }
 
     @Override
-    public List<Settings> getAllSettings() {
+    public String getAllSettings() throws IOException {
 //        return List.of(
 //                new Settings("LOG_LEVEL", "Уровень логирования(10/20/30)", "10"),
 //                new Settings("EXTERNAL_ADDRESS", "Внешний вид приложения", "app.dna-tech.dev"),
