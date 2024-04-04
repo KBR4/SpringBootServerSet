@@ -1,10 +1,224 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>CodePen - Vue.js 2 CRUD application</title>
+  <link rel="stylesheet" href="./style.css">
+
 </head>
 <body>
-    <H1> HELLO WORLD </H1>
+<!-- partial:index.partial.html -->
+<html lang="UTF-8">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Настройка параметров</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- load frameworks: vue + bootstrap -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/2.2.1/vue-router.js"></script>
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    
+  <link rel="stylesheet" href="https://unpkg.com/vue-nav-tabs/themes/vue-tabs.css">
+  <script src="https://rawgit.com/cristijora/vue-tabs/master/dist/vue-tabs.js"></script>    
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+  <style>
+  .textarea {
+  max-height: 60vh;
+  overflow: auto;
+  width: 100%;
+  min-height: 5rem;
+  padding: 1rem;
+  white-space: pre-wrap;
+  line-height: 20px;
+  margin-top: 1rem;
+}
+
+.textarea:empty:not(:focus)::before {
+  content: 'Лог сейчас пуст';
+  position: absolute;
+}
+  </style>
+     
+</head>
+
+<body>
+
+  <div class="container">
+    <header class="page-header">
+    </header>
+    <main id="app">
+      <router-view></router-view>
+    </main>
+  </div>
+
+  <template id="setting-list">
+  
+ <vue-tabs @tab-change="TabChange">
+    <v-tab title="Параметры">
+    <div>
+      <h2>Настройка параметров</h2>
+      <div class="actions">
+        <router-link class="btn btn-default" to="/edit">
+          <span class="glyphicon glyphicon-edit"></span>
+          Изменить
+        </router-link>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Параметр</th>
+            <th>Описание</th>
+            <th>Значение</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="setting in filteredSettings">
+            <td>
+              <router-link v-bind:to="{name: 'setting', params: {setting_name: setting.name}}">{{ setting.name
+                }}</router-link>
+            </td>
+            <td>{{ setting.description }}</td>
+            <td>
+              {{ setting.value }}
+              
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </v-tab>
+
+    <v-tab title="Логи">
+     <h2>Лог работы</h2>
+        <button v-on:click="readLogfile" class="btn ">
+          <span class="glyphicon  glyphicon-refresh"></span>
+           Обновить
+         </button>
+        <div class="comment-input">
+          <div class="textarea" contenteditable="false">{{ logfile }} </div>
+        </div>    
+    </v-tab>
+
+</vue-tabs>
+  </template>
+
+  <template id="edit-list">
+    <div>
+     <h2>Редактирование параметров</h2>
+      <form v-on:submit="updateSettings">
+        <button type="submit" class="btn btn-primary">
+          <span class="glyphicon glyphicon-ok-sign"></span>
+           Сохранить
+         </button>
+
+      
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Параметр</th>
+            <th>Описание</th>
+            <th>Значение</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="setting in filteredSettings">
+            <td>
+              <router-link v-bind:to="{name: 'setting', params: {setting_name: setting.name}}">{{ setting.name
+                }}</router-link>
+            </td>
+            <td>{{ setting.description }}</td>
+            <td>
+                <div class="form-group">
+                     <input type="string" class="form-control" id="setting-value" v-model="setting.value" />
+                </div>
+              
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </template>
+
+  <template id="add-setting">
+    <div>
+      <h2>Добавить настройку</h2>
+      <form v-on:submit="createSetting">
+        <div class="form-group">
+          <label for="add-name">Параметр</label>
+          <input class="form-control" id="add-name" v-model="setting.name" required />
+        </div>
+        <div class="form-group">
+          <label for="add-description">Описание</label>
+          <textarea class="form-control" id="add-description" rows="10" v-model="setting.description"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="add-value">Значение</label>
+          <input type="number" class="form-control" id="add-value" v-model="setting.value" />
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+        <router-link class="btn btn-default" to="/">Отменить</router-link>
+      </form>
+    </div>
+  </template>
+
+  <template id="setting">
+    <div>
+      <h2>{{ setting.name }}</h2>
+      <b>Описание: </b>
+      <div>{{ setting.description }}</div>
+      <b>value:</b>
+      <div>{{ setting.value }}</div>
+      <br />
+      <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+      <router-link to="/">Back to setting list</router-link>
+    </div>
+  </template>
+
+  <template id="setting-edit">
+    <div>
+      <h2>Edit setting</h2>
+      <form v-on:submit="updateSetting">
+        <div class="form-group">
+          <label for="edit-name">Параметр</label>
+          <input class="form-control" id="edit-name" v-model="setting.name" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-description">Описание</label>
+          <textarea class="form-control" id="edit-description" rows="3" v-model="setting.description"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="edit-value">Значение</label>
+          <input type="number" class="form-control" id="edit-value" v-model="setting.value" />
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <router-link class="btn btn-default" to="/">Отменить</router-link>
+      </form>
+    </div>
+  </template>
+
+  <template id="setting-delete">
+    <div>
+      <h2>Delete setting {{ setting.name }}</h2>
+      <form v-on:submit="deleteSetting">
+        <p>The action cannot be undone.</p>
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <router-link class="btn btn-default" to="/">Отменить</router-link>
+      </form>
+    </div>
+  </template>
+
+</body>
+
+</html>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
 </body>
 </html>

@@ -8,8 +8,7 @@ import java.util.List;
 
 public interface SettingsService {
     String getAllSettings() throws IOException;
-    Settings saveSetting(Settings setting);
-    Settings findByName(String name);
-    Settings updateSetting(Settings setting);
+    String updateSetting(String text) throws IOException;
     //полагаю что реализация crud целиком нам не нужна - функция удаления настройки не нужна, добавления и сохранения тоже.
+    String readLogFile() throws IOException;
 }

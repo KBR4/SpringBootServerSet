@@ -2,6 +2,7 @@ package com.example.springboot.controller;
 
 import com.example.springboot.model.Settings;
 import com.example.springboot.service.SettingsService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -11,28 +12,28 @@ import java.util.List;
 @RequestMapping("/api/v1/settings")
 public class UserSettingsController {
     private final SettingsService service; //создание тесной связи между прикладными компонентами
-
     public UserSettingsController(SettingsService service) {
         this.service = service;
     }
 
-    @GetMapping             //todo предполагаю что Get должен считывать информацию из settings.json ?
+    @GetMapping
     public String getSettings() throws IOException {
         return service.getAllSettings();
     }
 
-    @PostMapping("save_setting")
-    public Settings saveSetting(@RequestBody Settings setting) {
-        return service.saveSetting(setting);
+//    @PutMapping("/update")
+//    @ResponseStatus(HttpStatus.OK)
+//    public String updateSetting(String text) throws IOException {
+//        return service.updateSetting(text);
+//    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/update")
+    public String updateSetting(@RequestBody String text) throws IOException {
+        return service.updateSetting(text);
     }
 
-    @GetMapping("/{name}")
-    public Settings findByName(@PathVariable String name) {
-        return service.findByName(name);
-    }
-
-    @PutMapping("update_setting")
-    public Settings updateSetting(Settings setting) {
-        return service.updateSetting(setting);
+    @GetMapping("/readlog")
+    public String readLogFile() throws IOException {
+        return service.readLogFile();
     }
 }

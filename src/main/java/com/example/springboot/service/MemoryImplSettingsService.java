@@ -25,19 +25,13 @@ public class MemoryImplSettingsService implements SettingsService {
 //        );
         return repo.getAllSettings();
     }
-
     @Override
-    public Settings saveSetting(Settings setting) {
-        return repo.saveSetting(setting);
+    public String updateSetting(String text) throws IOException {
+        return repo.updateSetting(text);
     }
 
     @Override
-    public Settings findByName(String name) {
-        return repo.findByName(name);
-    }
-
-    @Override
-    public Settings updateSetting(Settings setting) {
-        return repo.updateSetting(setting);
+    public String readLogFile() throws IOException {
+        return repo.readLogFile();
     }
 }
