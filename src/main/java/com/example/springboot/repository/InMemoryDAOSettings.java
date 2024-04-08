@@ -6,14 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.FileCopyUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 @Repository
 public class InMemoryDAOSettings {
     private final List<Settings> SETTINGS = new ArrayList<>();
@@ -40,7 +41,24 @@ public class InMemoryDAOSettings {
     }
 
     public String readLogFile() throws IOException {
-        Resource res = resourceLoader.getResource("classpath:log.txt");
-        return (new String(res.getInputStream().readAllBytes()));
+
+        File file = new File("logfolder/logs.txt");
+        FileInputStream fis = new FileInputStream(file);
+        byte[] data = new byte[(int) file.length()];
+        fis.read(data);
+        fis.close();
+        String str = new String(data, "UTF-8");
+        return str;
+//        Resource res = resourceLoader.getResource("classpath:log.txt");
+//
+//        try (Reader reader = new InputStreamReader(res.getInputStream(), UTF_8)) {
+//            return FileCopyUtils.copyToString(reader);
+//        } catch (IOException e) {
+//            throw new UncheckedIOException(e);
+//        }
+        //return (new String(res.getInputStream().readAllBytes()));
+
+
+
     }
 }

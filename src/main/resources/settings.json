@@ -1,1 +1,1 @@
-[{"name":"LOG_LEVEL","description":"Уровень логирования (10|20|30)","value":"20"},{"name":"EXTERNAL_ADDRESS","description":"Внешний адрес приложения","value":"app.dna-tech.dev"},{"name":"DATABASE_HOST","description":"Адрес сервера баз данных","value":"127.0.0.1"}]
+{"settings":[{"name":"LOG_LEVEL","description":"Уровень логирования (10|20|30)","value":"10"},{"name":"EXTERNAL_ADDRESS","description":"Внешний адрес приложения","value":"app.dna-tech.dev"},{"name":"DATABASE_HOST","description":"Адрес сервера баз данных","value":"127.0.0.1"}]}
