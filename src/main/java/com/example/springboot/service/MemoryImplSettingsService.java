@@ -18,11 +18,6 @@ public class MemoryImplSettingsService implements SettingsService {
 
     @Override
     public String getAllSettings() throws IOException {
-//        return List.of(
-//                new Settings("LOG_LEVEL", "Уровень логирования(10/20/30)", "10"),
-//                new Settings("EXTERNAL_ADDRESS", "Внешний вид приложения", "app.dna-tech.dev"),
-//                new Settings("DATABASE_HOST", "Адрес сервера баз данных", "127.0.0.1")
-//        );
         return repo.getAllSettings();
     }
     @Override

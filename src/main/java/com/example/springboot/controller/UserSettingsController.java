@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/settings")
 public class UserSettingsController {
-    private final SettingsService service; //создание тесной связи между прикладными компонентами
+    private final SettingsService service;
     public UserSettingsController(SettingsService service) {
         this.service = service;
     }
@@ -20,12 +20,6 @@ public class UserSettingsController {
     public String getSettings() throws IOException {
         return service.getAllSettings();
     }
-
-//    @PutMapping("/update")
-//    @ResponseStatus(HttpStatus.OK)
-//    public String updateSetting(String text) throws IOException {
-//        return service.updateSetting(text);
-//    }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/update")
     public String updateSetting(@RequestBody String text) throws IOException {

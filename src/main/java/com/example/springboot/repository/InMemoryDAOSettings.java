@@ -49,15 +49,5 @@ public class InMemoryDAOSettings {
         fis.close();
         String str = new String(data, "UTF-8");
         return str;
-//
-//        try (Reader reader = new InputStreamReader(res.getInputStream(), UTF_8)) {
-//            return FileCopyUtils.copyToString(reader);
-//        } catch (IOException e) {
-//            throw new UncheckedIOException(e);
-//        }
-        //return (new String(res.getInputStream().readAllBytes()));
-
-
-
     }
 }
