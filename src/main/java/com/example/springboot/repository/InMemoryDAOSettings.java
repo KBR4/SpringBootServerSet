@@ -49,7 +49,6 @@ public class InMemoryDAOSettings {
         fis.close();
         String str = new String(data, "UTF-8");
         return str;
-//        Resource res = resourceLoader.getResource("classpath:log.txt");
 //
 //        try (Reader reader = new InputStreamReader(res.getInputStream(), UTF_8)) {
 //            return FileCopyUtils.copyToString(reader);

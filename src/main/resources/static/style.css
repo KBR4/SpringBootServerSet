@@ -1,3 +1,14 @@
+html{
+ font-family: "Inter" !important;
+ 
+}
+body{
+ font-family: "Inter" !important;
+ font-weight: 500;
+ color: #152536;
+ background-color: #F8F9FA;
+}
+
 .logo {
   width: 75px;
   float: left;
@@ -18,14 +29,10 @@
 
 .page-header {
 	font-size: 32px;
-	font-family: Inter;
-	font-weight: bold;
-	color: #616680;
-	
 }
 
 .block-title {
-	font-weight: bold;
+	
 }
 
 .tab-content {
@@ -36,13 +43,11 @@
 .table-header {
 	display: flex;
 	font-size:20px;
-	height: 40px;
-    align-items: center;
-    margin-left: 20px;
-	margin-right:20px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	gap:20px;
+        align-items: center;
+        gap:20px;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        
 }
 
 .actions {
@@ -53,21 +58,24 @@
 
 .table {
 	border:1px solid black;
-	
-	margin-top: 10px;
-	margin-bottom: 10px;
-	padding: 20px 20px 20px 20px;
-	border-color: #CED4DA;
+        border-color: #CED4DA;
+        margin-bottom: 10px;
 }
 
 .whole-block {
 	border: 1px solid black;
-	border-color: #CED4DA;
+        border-color: #CED4DA;
+        padding: 20px;
+        display: flex;
+        background-color: #fff;
+        
 }
-
+.width100 {
+  width: 100%;
+}
 .toprow {
-	background-color: #F8F9FD;
-	
+        background-color: #F8F9FD;
+        font-size: 14px;
 }
 
 .comment-input {
@@ -75,43 +83,43 @@
 	border-color: #CED4DA;
 }
 
-.whole-block-log {
-	border: 1px solid black;
-	border-color: #CED4DA;
-}
-
-.table-header-log {
-	display: flex;
-	font-size:20px;
-	height: 40px;
-    align-items: center;
-    margin-left: 20px;
-	margin-right:20px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	gap:20px;
-}
-
-.comment-input {
-	border: 1px solid black;
-	border-color: #CED4DA;
-	margin-left: 20px;
-	margin-right:20px;
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
 
 .textarea {
   max-height: 60vh;
   overflow: auto;
   width: 100%;
-  min-height: 400px;
-  padding: 10px;
+  min-height: 500px;
+  padding: 1rem;
   white-space: pre-wrap;
   line-height: 20px;
-  gap: 10px;
+  font-size: 12px;
 }
 
-.block-title-log {
-	font-weight: bold;
+.active_tab {
+ font-weight: 600;
+}
+.tab {
+ font-weight: 500;
+} 
+.conf-title{
+ color: #616680;
+ font-weight: 700;
+ font-size: 32px;
+ vertical-align: middle;
+}
+.conf-button{
+ font-weight: 600;
+ font-size: 12px;
+}
+.conf-table{
+ font-size: 12px;
+}
+.error-badge {
+font-size: 24px;
+background-color: #FA633A;
+color: #fff;
+padding: 20px;
+margin-top: 20px;
+/* border-radius: 32px;*/
+
 }

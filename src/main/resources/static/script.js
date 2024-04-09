@@ -2,15 +2,22 @@ url_settings='http://localhost:8080/api/v1/settings';
 url_logfile='http://localhost:8080/api/v1/settings/readlog';
 url_update_settings='http://localhost:8080/api/v1/settings/update';
 
-settings= [];
+//url_settings='http://127.0.0.1/unhackme/help/settings.json';
+//url_logfile='http://127.0.0.1/unhackme/help/log.txt';
+//url_update_settings='http://localhost:3000/settings';
+
+GlobalSettings= [];
+const TAB_SETTINGS = 0;
+const TAB_LOGS = 1;
+ConnectError= '';
 
 function findSetting (settingName) {
-  return settings[findSettingKey(settingName)];
+  return GlobalSettings[findSettingKey(settingName)];
 };
 
 function findSettingKey (settingName) {
-  for (var key = 0; key < settings.length; key++) {
-    if (settings[key].name == settingName) {
+  for (var key = 0; key < GlobalSettings.length; key++) {
+    if (GlobalSettings[key].name == settingName) {
       return key;
     }
   }
@@ -19,11 +26,11 @@ function findSettingKey (settingName) {
 var List = Vue.extend({
   template: '#setting-list',
   data: function () {
-   if(settings.length == 0)
+   if(GlobalSettings.length == 0)
    {
      this.init();
    }  
-    return {settings: settings, searchKey: '', logfile: '', IsEdit:false };
+    return {settings: JSON.parse(JSON.stringify(GlobalSettings)), searchKey: '', logfile: '', IsEdit:false,  errorText: '' };
   },
   computed: {
     filteredSettings: function () {
@@ -49,10 +56,33 @@ var List = Vue.extend({
             xobj.send(null);
         },
         loadAxios(url,callback) {
+         ConnectError='';
+         this.errorText='';
+
          axios.get(url)
           .then(response => ( callback(response)))
-              .catch(error => console.log(error))
+              .catch(error => {console.log(error);
+              ConnectError=error.message;
+              this.errorText=error.message;
+              })
         },
+        putAxios(url, data) {
+           try {
+                ConnectError='';
+                    axios.put(url,data)
+                    .then(function (response) {  console.log(response);  })          
+                    .catch(error => {
+                    console.log(error);
+                    ConnectError=error.message;
+                    this.errorText="Update Settings: " +error.message;
+                    })
+                    .finally(function () { console.log('Finished put') });
+         
+                } catch (error)
+                  {
+                     console.error(error);
+                   }          
+         },
         /*
                 init() {
             let that = this
@@ -70,72 +100,59 @@ var List = Vue.extend({
             that.loadAxios(url_settings, function (response) {
                 console.log(response);
                 that.settings = response.data.settings;
-                settings= response.data.settings;
+                GlobalSettings = response.data.settings;
             });
+             this.readLogfile();
         },
         readLogfile() {
             let that = this
             that.loadAxios(url_logfile, function (response) {
+               
                 console.log(response);
                 that.logfile = response.data;
             });
         },
-		TabChange(tabIndex, newTab, oldTab){
-             console.log(tabIndex, newTab.title, oldTab.title);
-			 if (newTab.title === "Логи")
-			 {
-				 this.readLogfile();
-			 }	 
+     TabChange(tabIndex, newTab, oldTab){
+             console.log(tabIndex, newTab.title, oldTab.title);          
+             switch(tabIndex)
+             {
+			    case TAB_SETTINGS:
+					this.settings = JSON.parse(JSON.stringify(GlobalSettings));
+					this.IsEdit = false;
+					break;
+				case TAB_LOGS:
+                this.readLogfile();
+                break;
+             }
       },
       updateLogs()
       {
         console.log("UpdateLogs started!");
       },
-	  setEditMode()
-	  {
-		  this.IsEdit = true;
-		  
-		  //router.push('/');
-	  },
-	  setViewMode()
-	  {
-		  settings = this.settings;
-		  var jsonset = this.settings;
-		  var objj = {};
-		  objj.settings = jsonset;
-		  putAxios(url_update_settings, objj);
-		  this.IsEdit = false;
-		  //router.push('/');
-	  }
+	 setEditMode()
+	 {
+	 this.IsEdit = true;
+	 
+	 //router.push('/');
+	 },
+	 setViewMode()
+	 {
+		GlobalSettings = JSON.parse(JSON.stringify(this.settings));
+		var jsonset = this.settings;
+		var objj = {};
+        objj.settings = jsonset;
+	    this.errorText='';
+        this.IsEdit = false;
+		this.putAxios(url_update_settings, objj);
+		//router.push('/');
+	}
     },
-  
-});
-
-function putAxios(url, data) 
-{
-try {
-         axios.put(url,data)
-          .then(function (response) {  console.log(response);  })          
-          .catch(error => console.log(error))
-          .finally(function () { console.log('Finished put') });
-          
-} catch (error) 
-  {
-   console.error(error);
-  }          
-};
-
-var Setting = Vue.extend({
-  template: '#setting',
-  data: function () {
-    return {setting: findSetting(this.$route.params.setting_name)};
-  }
+ 
 });
 
 
 var router = new VueRouter({routes:[
-  { path: '/', component: List},
-  { path: '/setting/:setting_name', component: Setting, name: 'setting'}
+  { path: '/', component: List}
 ]});
 app = new Vue({
   router:router
